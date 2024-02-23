@@ -10,11 +10,20 @@ const LoginPage = ({ navigation }) => {
     console.log('Login credentials', { username, password });
     // If login is successful, you can navigate to another screen or perform other actions
     // navigation.navigate('YourNextScreenName');
+    navigation.navigate('MainPage')
+  };
+
+  const handleSignUp = () => {
+    // Here, you would typically make an API call to your backend to verify the user credentials
+    console.log('Login credentials', { username, password });
+    // If login is successful, you can navigate to another screen or perform other actions
+    // navigation.navigate('YourNextScreenName');
+    navigation.navigate('SignUp')
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Login</Text>
+      <Text style={styles.title}>Welcome to APP</Text>
       <TextInput
         style={styles.input}
         placeholder="Username"
@@ -28,7 +37,13 @@ const LoginPage = ({ navigation }) => {
         onChangeText={setPassword}
         secureTextEntry
       />
-      <Button title="Login" onPress={handleLogin} />
+      {/* <Button title="Login" onPress={handleLogin} />
+      <Button title="SignUp" onPress={handleSignUp} /> */}
+      <View style={styles.buttonContainer}>
+        <Button title="Login" onPress={handleLogin} />
+        <View style={styles.buttonSpacer} />
+        <Button title="SignUp" onPress={handleSignUp} />
+      </View>
     </View>
   );
 };
@@ -51,6 +66,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
     borderRadius: 5,
+  },
+  buttonContainer: {
+    flexDirection: 'row', 
+    paddingTop: 10,
+  },
+  buttonSpacer: {
+    width: 10, 
   },
 });
 
