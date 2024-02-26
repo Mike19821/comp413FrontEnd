@@ -4,17 +4,10 @@ import {NavigationContainer} from '@react-navigation/native';
 import * as React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LoginPage from './pages/loginPage';
+import ARimageTaken from './pages/ARimageTaken';
 
 const Stack = createNativeStackNavigator();
 
-const HomeScreen = ({navigation}) => {
-  return (
-    <View style={styles.container}>
-      <Text>OK</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-};
 
 export default function App() {
   return (
@@ -22,7 +15,7 @@ export default function App() {
       <Stack.Navigator>
         <Stack.Screen
           name="Home"
-          component={LoginPage}
+          component={ARimageTaken}
           options={{title: 'Welcome'}}
         />
       </Stack.Navigator>
