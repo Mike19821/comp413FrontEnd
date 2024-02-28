@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
   //   borderRadius: 20,
   // },
   camera: {
-    height: 300, // Set a fixed height
+    height: 400, // Set a fixed height
     width: '100%', // Set width to take up 100% of the container width
     borderRadius: 20,
     alignSelf: 'center', // This centers the camera view horizontally
