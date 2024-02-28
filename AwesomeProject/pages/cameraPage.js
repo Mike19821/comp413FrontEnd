@@ -108,8 +108,9 @@ export default function ARimageTaken() {
               title="Re-take"
               onPress={() => setImage(null)}
               icon="retweet"
+              color="#000" textStyle={{ color: '#000' }} 
             />
-            <Button title="Save" onPress={savePicture} icon="check" />
+            <Button title="Save" onPress={savePicture} icon="check" color="#000" textStyle={{ color: '#000' }} />
           </View>
         ) : (
           <Button title="Take a picture" onPress={takePicture} icon="camera" color="#000" textStyle={{ color: '#000' }} />
