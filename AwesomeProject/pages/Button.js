@@ -1,13 +1,14 @@
 import * as React from 'react';
 import { Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
+// Import statement for MaterialIcons seems unused based on your provided code
 
-export default function Button({ title, onPress, icon, color }) {
+export default function Button({ title, onPress, icon, color, textStyle }) {
   return (
     <TouchableOpacity onPress={onPress} style={styles.button}>
       <Entypo name={icon} size={28} color={color ? color : '#f1f1f1'} />
-      <Text style={styles.text}>{title}</Text>
+      {/* Apply the textStyle prop here */}
+      <Text style={[styles.text, textStyle]}>{title}</Text>
     </TouchableOpacity>
   );
 }
@@ -22,7 +23,7 @@ const styles = StyleSheet.create({
   text: {
     fontWeight: 'bold',
     fontSize: 16,
-    color: '#f1f1f1',
+    color: '#f1f1f1', // This is the default color
     marginLeft: 10,
   },
 });

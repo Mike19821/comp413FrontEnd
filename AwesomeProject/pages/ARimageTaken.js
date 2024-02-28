@@ -110,7 +110,7 @@ export default function ARimageTaken() {
             <Button title="Save" onPress={savePicture} icon="check" />
           </View>
         ) : (
-          <Button title="Take a picture" onPress={takePicture} icon="camera" />
+          <Button color="#000" title="Take a picture" onPress={takePicture} icon="camera" />
         )}
       </View>
     </View>

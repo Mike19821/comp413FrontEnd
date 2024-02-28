@@ -88,6 +88,8 @@ export default function ARimageTaken() {
               color={flash === Camera.Constants.FlashMode.off ? 'gray' : '#fff'}
             />
           </View>
+
+          
         </Camera>
       ) : (
         <Image source={{ uri: image }} style={styles.camera} />
@@ -110,7 +112,7 @@ export default function ARimageTaken() {
             <Button title="Save" onPress={savePicture} icon="check" />
           </View>
         ) : (
-          <Button title="Take a picture" onPress={takePicture} icon="camera" />
+          <Button title="Take a picture" onPress={takePicture} icon="camera" color="#000" textStyle={{ color: '#000' }} />
         )}
       </View>
     </View>
@@ -146,9 +148,16 @@ const styles = StyleSheet.create({
     color: '#E9730F',
     marginLeft: 10,
   },
+  // camera: {
+  //   flex: 5,
+  //   borderRadius: 20,
+  // },
   camera: {
-    flex: 5,
+    height: 300, // Set a fixed height
+    width: '100%', // Set width to take up 100% of the container width
     borderRadius: 20,
+    alignSelf: 'center', // This centers the camera view horizontally
+    marginVertical: 20, // Adds some vertical space above and below the camera view
   },
   topControls: {
     flex: 1,
