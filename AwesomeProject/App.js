@@ -8,6 +8,7 @@ import RegistrationPage from './pages/registrationPage';
 import MainPage from './pages/mainPage';
 import CameraPageScreen from './pages/cameraPage';
 import BrowseTBPsScreen from './pages/allTBPsPage';
+import MailboxScreen from './pages/mailPage';
 
 const Stack = createNativeStackNavigator();
 
@@ -35,6 +36,7 @@ export default function App() {
       <Stack.Screen name="SignUp" component={RegistrationPage} />
       <Stack.Screen name="BrowseTBPs" component={BrowseTBPsScreen} />
       <Stack.Screen name="CameraPage" component={CameraPageScreen} />
+      <Stack.Screen name="MailPage" component={MailboxScreen} />
     </Stack.Navigator>
   </NavigationContainer>
   );

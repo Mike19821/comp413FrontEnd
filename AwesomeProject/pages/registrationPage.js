@@ -4,6 +4,8 @@ import { View, TextInput, Button, StyleSheet, Text } from 'react-native';
 const RegistrationPage = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
+  const [role, setRole] = useState('');
+  const [hospital, setHospital] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
@@ -28,6 +30,18 @@ const RegistrationPage = () => {
         keyboardType="email-address"
         value={email}
         onChangeText={setEmail}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Role"
+        value={role}
+        onChangeText={setRole}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Hospital"
+        value={hospital}
+        onChangeText={setHospital}
       />
       <TextInput
         style={styles.input}
