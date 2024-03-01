@@ -37,11 +37,34 @@ export default function ARimageTaken() {
     if (image) {
       try {
         const asset = await MediaLibrary.createAssetAsync(image);
-        alert('Picture saved! 🎉');
-        setImage(null);
-        console.log('saved successfully');
+        let formData = new FormData();
+        formData.append('image', {
+          uri: image,
+          type: 'image/jpeg',
+          name: 'photo.jpg',
+        });
+
+        let response = await fetch('http://yourbackend.com/upload', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+          body: formData,
+        });
+  
+        let responseJson = await response.json();
+
+        console.log(responseJson); // Log the response from the server
+
+        if (response.ok) {
+          alert('Picture uploaded! 🎉');
+          setImage(null); // Clear the image state if upload is successful
+        } else {
+          alert('Upload failed!');
+        }
       } catch (error) {
         console.log(error);
+        alert('An error occurred while uploading the picture.');
       }
     }
   };
@@ -88,8 +111,6 @@ export default function ARimageTaken() {
               color={flash === Camera.Constants.FlashMode.off ? 'gray' : '#fff'}
             />
           </View>
-
-          
         </Camera>
       ) : (
         <Image source={{ uri: image }} style={styles.camera} />
@@ -154,7 +175,7 @@ const styles = StyleSheet.create({
   //   borderRadius: 20,
   // },
   camera: {
-    height: 300, // Set a fixed height
+    height: 400, // Set a fixed height
     width: '100%', // Set width to take up 100% of the container width
     borderRadius: 20,
     alignSelf: 'center', // This centers the camera view horizontally
