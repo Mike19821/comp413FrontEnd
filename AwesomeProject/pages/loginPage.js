@@ -1,16 +1,38 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet, Text } from 'react-native';
+import { View, TextInput, Button, StyleSheet, Text, Image} from 'react-native';
 
 const LoginPage = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
+  const handleLogin = async() => {
     // Here, you would typically make an API call to your backend to verify the user credentials
     console.log('Login credentials', { username, password });
-    // If login is successful, you can navigate to another screen or perform other actions
-    // navigation.navigate('YourNextScreenName');
-    navigation.navigate('MainPage')
+    try {
+      const response = await fetch('https://yourapi.domain.com/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username,
+          password,
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Login failed');
+      }
+  
+      const data = await response.json();
+      console.log('Login successful', data);
+      // Here you can handle navigation or other actions after a successful login
+      navigation.navigate('MainPage');
+    } catch (error) {
+      console.error('Login error', error);
+      navigation.navigate('MainPage');
+      // Handle login error (e.g., show a message to the user)
+    }
   };
 
   const handleSignUp = () => {
@@ -23,6 +45,7 @@ const LoginPage = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <Image style={styles.image} source={require('../heart.webp')} />
       <Text style={styles.title}>Welcome to APP</Text>
       <TextInput
         style={styles.input}
@@ -54,10 +77,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
+    backgroundColor: '#F8F9F2',
   },
   title: {
     fontSize: 24,
     marginBottom: 20,
+  },
+  image: {
+    width: 200, // Set your desired width
+    height: 200, // Set your desired height
   },
   input: {
     width: '100%',
