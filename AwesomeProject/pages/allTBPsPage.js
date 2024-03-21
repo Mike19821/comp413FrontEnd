@@ -1,51 +1,56 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, Image, StyleSheet } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
+import React, { useState } from 'react';
+import { Modal, View, Text, FlatList, Image, TouchableOpacity, StyleSheet, Button } from 'react-native';
 
 const BrowseTBPsScreen = () => {
   const [photos, setPhotos] = useState([]);
-  const [selection, setSelection] = useState('back');
+  const [selection, setSelection] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
 
-  useEffect(() => {
-    // const fetchPhotos = async () => {
-    //   try {
-    //     const response = await fetch('https://yourapi.domain.com/photos', {
-    //       method: 'GET',
-    //       headers: {
-    //         'Content-Type': 'application/json',
-    //       },
-    //       body: JSON.stringify({
-            
-    //       }),
-    //     });
-    //     const data = await response.json();
-    //     setPhotos(data.photos); 
-    //   } catch (error) {
-    //     console.error('Error fetching photos:', error);
-    //   }
-    // };
-
-    // fetchPhotos();
-  }, []); // Empty dependency array means this effect runs once on mount
+  const options = [
+    { label: "Back", value: "back" },
+    { label: "Front", value: "front" },
+    { label: "Both", value: "both" },
+  ];
 
   return (
     <View style={styles.container}>
-      <Text>List of TBPs</Text>
-      <Picker
-        selectedValue={selection}
-        onValueChange={(itemValue, itemIndex) => setSelection(itemValue)}
-        style={styles.picker}
+      <TouchableOpacity
+        style={styles.selectionBox}
+        onPress={() => setModalVisible(true)}
       >
-        <Picker.Item label="Back" value="back" />
-        <Picker.Item label="Front" value="front" />
-        <Picker.Item label="Both" value="both" />
-      </Picker>
+        <Text style={styles.selectionText}>{selection || "Choose the side of patient"}</Text>
+      </TouchableOpacity>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            {options.map((option) => (
+              <Button
+                key={option.value}
+                onPress={() => {
+                  setSelection(option.label);
+                  setModalVisible(!modalVisible);
+                }}
+                title={option.label}
+              />
+            ))}
+          </View>
+        </View>
+      </Modal>
+
       <FlatList
         data={photos}
-        keyExtractor={item => item.id.toString()} // Assuming each photo has a unique 'id'
+        keyExtractor={item => item.id.toString()}
         renderItem={({ item }) => (
           <Image
-            source={{ uri: item.url }} // Assuming each photo has a 'url'
+            source={{ uri: item.url }}
             style={styles.photo}
           />
         )}
@@ -60,15 +65,40 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  selectionBox: {
+    borderWidth: 1,
+    borderColor: '#000',
+    padding: 10,
+    marginVertical: 10,
+  },
+  selectionText: {
+    fontSize: 16,
+  },
   photo: {
-    width: 300, // Adjust size as needed
-    height: 200, // Adjust size as needed
+    width: 300,
+    height: 200,
     marginVertical: 8,
   },
-  picker: {
-    height: 50,
-    width: 150,
-    marginVertical: 10,
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
 });
 
