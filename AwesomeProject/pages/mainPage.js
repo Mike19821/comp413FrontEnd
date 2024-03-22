@@ -21,6 +21,10 @@ const MainPage = ({ navigation }) => {
         title="Mail Box"
         onPress={() => navigation.navigate('MailPage')}
       />
+      <Button
+        title="Profile"
+        onPress={() => navigation.navigate('ProfilePage')}
+      />
 
       <Button
         title="Log out"

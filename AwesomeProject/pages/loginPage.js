@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet, Text, Image} from 'react-native';
+import { View, TextInput, Button, StyleSheet, Text, Image, TouchableOpacity, ImageBackground } from 'react-native';
 
 const LoginPage = ({ navigation }) => {
   const [username, setUsername] = useState('');
@@ -44,9 +44,15 @@ const LoginPage = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Image style={styles.image} source={require('../heart.webp')} />
-      <Text style={styles.title}>Welcome to APP</Text>
+    <ImageBackground 
+      source={require('../images/background2.png')} 
+      style={styles.backgroundImage}
+      resizeMode="cover" // Cover the entire screen without stretching the image
+    >
+      <View style={styles.container}>
+      {/* <Image style={styles.image} source={require('../heart.webp')} /> */}
+      <Image style={styles.image} source={require('../images/LOGO2.png')} />
+      {/* <Text style={styles.title}>Welcome to </Text> */}
       <TextInput
         style={styles.input}
         placeholder="Username"
@@ -68,24 +74,63 @@ const LoginPage = ({ navigation }) => {
         <Button title="SignUp" onPress={handleSignUp} />
       </View>
     </View>
+      
+    </ImageBackground>
+
+    // <View style={styles.container}>
+    //   <Image style={styles.image} source={require('../heart.webp')} />
+    //   <Text style={styles.title}>Welcome to APP</Text>
+    //   <TextInput
+    //     style={styles.input}
+    //     placeholder="Username"
+    //     value={username}
+    //     onChangeText={setUsername}
+    //   />
+    //   <TextInput
+    //     style={styles.input}
+    //     placeholder="Password"
+    //     value={password}
+    //     onChangeText={setPassword}
+    //     secureTextEntry
+    //   />
+    //   {/* <Button title="Login" onPress={handleLogin} />
+    //   <Button title="SignUp" onPress={handleSignUp} /> */}
+    //   <View style={styles.buttonContainer}>
+    //     <Button title="Login" onPress={handleLogin} />
+    //     <View style={styles.buttonSpacer} />
+    //     <Button title="SignUp" onPress={handleSignUp} />
+    //   </View>
+    // </View>
   );
 };
 
 const styles = StyleSheet.create({
+  backgroundImage: {
+    flex: 1, // Fill the screen
+    width: '100%', // Ensure full width
+    height: '100%', // Ensure full height
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-    backgroundColor: '#F8F9F2',
+    // backgroundColor: 'rgba(255, 255, 255, 0.8)', // Adding some opacity to make text more readable against the background image
   },
+  // container: {
+  //   flex: 1,
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  //   padding: 20,
+  //   backgroundColor: '#F8F9F2',
+  // },
   title: {
     fontSize: 24,
     marginBottom: 20,
   },
   image: {
-    width: 200, // Set your desired width
-    height: 200, // Set your desired height
+    width: 300, // Set your desired width
+    height: 300, // Set your desired height
   },
   input: {
     width: '100%',
