@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 
-const MainPage = ({ navigation }) => {
+const MainPage = ({ route, navigation }) => {
+  const username = route.params.username;
   return (
     <View style={styles.container}>
       <Text style={styles.greeting}>Hello Patient Name!</Text>
@@ -10,12 +11,12 @@ const MainPage = ({ navigation }) => {
 
       <Button
         title="Browse TBPs"
-        onPress={() => navigation.navigate('BrowseTBPs')}
+        onPress={() => navigation.navigate('BrowseTBPs', { username: username })}
       />
       
       <Button
         title="Take a new TBP"
-        onPress={() => navigation.navigate('CameraPage')}
+        onPress={() => navigation.navigate('CameraPage', { username: username })}
       />
       <Button
         title="Mail Box"

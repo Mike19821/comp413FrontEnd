@@ -13,7 +13,7 @@ const RegistrationPage = () => {
     // Here, you would typically validate the inputs and then make an API call to your backend to register the user
     console.log('Registration details', { username, email, password, confirmPassword });
     // After successful registration, navigate to login screen or elsewhere as needed
-    try{
+    try {
       const response = await fetch('https://yourapi.domain.com/register', {
         method: 'POST',
         headers: {
