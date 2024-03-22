@@ -16,7 +16,7 @@ const MainPage = ({ route, navigation }) => {
       
       <Button
         title="Take a new TBP"
-        onPress={() => navigation.navigate('CameraPage')}
+        onPress={() => navigation.navigate('CameraPage', { username: username })}
       />
       <Button
         title="Mail Box"

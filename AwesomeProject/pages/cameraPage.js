@@ -1,17 +1,25 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { Modal, Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import Constants from 'expo-constants';
 import { Camera, CameraType } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
 import { MaterialIcons } from '@expo/vector-icons';
 import Button from './Button.js';
 
-export default function ARimageTaken() {
+export default function ARimageTaken({route, navigation}) {
+  const username = route.params.username;
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [image, setImage] = useState(null);
+  const [selection, setSelection] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [flash, setFlash] = useState(Camera.Constants.FlashMode.off);
   const cameraRef = useRef(null);
+
+  const options = [
+    { label: "Back", value: "back" },
+    { label: "Front", value: "front" }
+  ];
 
   useEffect(() => {
     (async () => {
@@ -44,7 +52,13 @@ export default function ARimageTaken() {
           name: 'photo.jpg',
         });
 
-        let response = await fetch('http://yourbackend.com/upload', {
+        formData.append('patientID', username);
+        formData.append('patientID', new Date().toISOString());
+        formData.append('patientID', 'front');
+
+
+
+        let response = await fetch('http://yourbackend.com/uploadImage/', {
           method: 'POST',
           headers: {
             'Content-Type': 'multipart/form-data',
@@ -115,6 +129,12 @@ export default function ARimageTaken() {
       ) : (
         <Image source={{ uri: image }} style={styles.camera} />
       )}
+      <TouchableOpacity
+          style={styles.selectionBox}
+          onPress={() => setModalVisible(true)}
+        >
+          <Text style={styles.selectionText}>{selection || "Side"}</Text>
+      </TouchableOpacity>
 
       <View style={styles.controls}>
         {image ? (
@@ -137,11 +157,72 @@ export default function ARimageTaken() {
           <Button title="Take a picture" onPress={takePicture} icon="camera" color="#000" textStyle={{ color: '#000' }} />
         )}
       </View>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            {options.map((option) => (
+              <Button
+                key={option.value}
+                onPress={() => {
+                  setSelection(option.label);
+                  setModalVisible(!modalVisible);
+                }}
+                title={option.label}
+              />
+            ))}
+          </View>
+        </View>
+      </Modal>
     </View>
+
+    
   );
 }
 
 const styles = StyleSheet.create({
+
+  selectionBox: {
+    borderWidth: 1,
+    borderColor: '#000',
+    padding: 10,
+    marginVertical: 10,
+  },
+  selectionText: {
+    fontSize: 16,
+  },
+  photo: {
+    width: 300,
+    height: 200,
+    marginVertical: 8,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
   title: {
     fontSize: 24,
     marginBottom: 20,
