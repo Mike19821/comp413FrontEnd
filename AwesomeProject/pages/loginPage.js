@@ -45,7 +45,7 @@ const LoginPage = ({ navigation }) => {
 
   return (
     <ImageBackground 
-      source={require('../images/background2.png')} 
+      // source={require('../images/background2.png')} 
       style={styles.backgroundImage}
       resizeMode="cover" // Cover the entire screen without stretching the image
     >
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-    // backgroundColor: 'rgba(255, 255, 255, 0.8)', // Adding some opacity to make text more readable against the background image
+    backgroundColor: '#EAF4F1',
   },
   // container: {
   //   flex: 1,
