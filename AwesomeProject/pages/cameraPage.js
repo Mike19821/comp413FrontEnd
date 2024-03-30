@@ -46,19 +46,24 @@ export default function ARimageTaken({route, navigation}) {
       try {
         const asset = await MediaLibrary.createAssetAsync(image);
         let formData = new FormData();
-        formData.append('image', {
+        formData.append('file', {
           uri: image,
           type: 'image/jpeg',
           name: 'photo.jpg',
         });
 
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        const formattedDate = `${year}/${day}/${month}`;
+        print(formattedDate);
+
         formData.append('patientID', username);
-        formData.append('patientID', new Date().toISOString());
-        formData.append('patientID', 'front');
+        formData.append('date', formattedDate);
+        formData.append('side', selection);
 
-
-
-        let response = await fetch('http://yourbackend.com/uploadImage/', {
+        let response = await fetch('http://127.0.0.1:5000/uploadImage', {
           method: 'POST',
           headers: {
             'Content-Type': 'multipart/form-data',
@@ -266,4 +271,3 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
-

@@ -5,7 +5,7 @@ const MainPage = ({ route, navigation }) => {
   const username = route.params.username;
   return (
     <View style={styles.container}>
-      <Text style={styles.greeting}>Hello Patient Name!</Text>
+      <Text style={styles.greeting}>Hello {username}!</Text>
       
       <Text style={styles.menuTitle}>Menu</Text>
 

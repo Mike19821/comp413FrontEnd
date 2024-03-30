@@ -8,13 +8,22 @@ const MailboxScreen = () => {
   // Simulate fetching messages from a backend
   useEffect(() => {
     const fetchMessages = async () => {
-      // Here you would fetch messages from your backend
-      // For demonstration, we're using static data
-      const fetchedMessages = [
-        { id: '1', sender: 'User1', content: 'Hello!' },
-        { id: '2', sender: 'User2', content: 'How are you?' },
-      ];
-      setMessages(fetchedMessages);
+      try {
+        // Specify the URL of your backend endpoint
+        const url = 'http://127.0.0.1:5000/messages';
+        const response = await fetch(url);
+
+        // Check if the request was successful
+        if (!response.ok) {
+          throw new Error(`Error: ${response.statusText}`);
+        }
+
+        const fetchedMessages = await response.json();
+
+        setMessages(fetchedMessages);
+      } catch (error) {
+        console.error('Failed to fetch messages:', error);
+      }
     };
 
     fetchMessages();

@@ -27,22 +27,31 @@ const BrowseTBPsScreen = ({route, navigation}) => {
   const onPressButton = async() => {
     // Your button press functionality here
     try {
-      console.log('Images fetch successful', data);
-      const response = await fetch('https://yourapi.domain.com/getImage/', {
+      const dateObj = new Date(date);
+      const year = dateObj.getFullYear();
+      const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+      const day = String(dateObj.getDate()).padStart(2, '0');
+      const formattedDate = `${year}/${day}/${month}`;
+
+      console.log(formattedDate);
+      const response = await fetch('http://127.0.0.1:5000/getImage', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           side: selection,
-          date: date,
+          date: formattedDate,
           patientID: username
         }),
       });
       if (!response.ok) {
         throw new Error('Images fetch failed');
       }
-      const data = await response.json();
+      // const data = await response.json();
+      const blob = await response.blob();
+      const imageUrl = URL.createObjectURL(blob);
+      setPhotos(prevPhotos => [{ id: Date.now().toString(), url: imageUrl }]);
 
       
     } catch (error) {
