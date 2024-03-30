@@ -78,10 +78,35 @@
 
 // export default UserInfoPage;
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 
-const UserInfoPage = () => {
+const UserInfoPage = ({route, navigation}) => {
+  const username = route.params.username;
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch('http://127.0.0.1:5000/patientInfo', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            patientID: username
+          }),
+        });
+        if (!response.ok) {
+          throw new Error('Profile fetch failed');
+        }
+        const profile = await response.json();
+        console.log(profile);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchUserData();
+  }, [username]); 
   // Mocked user data
   const user = {
     name: 'John Doe',
