@@ -44,6 +44,14 @@ const MainPage = ({ route, navigation }) => {
 
         <TouchableOpacity
           style={[styles.button, { width: buttonSize, height: buttonSize }]}
+          onPress={() => navigation.navigate('DocPage')}
+        >
+          <Image source={require('../images/button3.png')} style={styles.buttonImage} />
+          <Text style={styles.buttonText}>Doc Box</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.button, { width: buttonSize, height: buttonSize }]}
           onPress={() => navigation.navigate('ProfilePage', { username: username })}
         >
           <Image source={require('../images/button4.png')} style={styles.buttonImage} />
