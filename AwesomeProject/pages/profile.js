@@ -82,7 +82,10 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 
 const UserInfoPage = ({route, navigation}) => {
+
   const username = route.params.username;
+  const [profile, setProfile] = useState({});
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -98,8 +101,8 @@ const UserInfoPage = ({route, navigation}) => {
         if (!response.ok) {
           throw new Error('Profile fetch failed');
         }
-        const profile = await response.json();
-        console.log(profile);
+        const data = await response.json();
+        setProfile(data);
       } catch (error) {
         console.log(error);
       }
@@ -108,15 +111,6 @@ const UserInfoPage = ({route, navigation}) => {
     fetchUserData();
   }, [username]); 
   // Mocked user data
-  const user = {
-    name: 'John Doe',
-    age: 30,
-    sex: 'Male',
-    currentHospital: 'General Hospital',
-    patientId: '123456789',
-    doctorId: '987654321',
-    password: 'password123' // In a real app, the password wouldn't be handled like this.
-  };
 
   const [newPassword, setNewPassword] = useState('');
   const [passwordUpdated, setPasswordUpdated] = useState(false);
@@ -134,13 +128,13 @@ const UserInfoPage = ({route, navigation}) => {
     <View style={styles.container}>
       <Text style={styles.header}>User Information</Text>
       <View style={styles.infoContainer}>
-        <Text style={styles.infoText}>Name: {user.name}</Text>
-        <Text style={styles.infoText}>Age: {user.age}</Text>
-        <Text style={styles.infoText}>Sex: {user.sex}</Text>
-        <Text style={styles.infoText}>Current Hospital: {user.currentHospital}</Text>
-        <Text style={styles.infoText}>Patient ID: {user.patientId}</Text>
-        <Text style={styles.infoText}>Doctor ID: {user.doctorId}</Text>
-        <Text style={styles.infoText}>Password: {'*'.repeat(user.password.length)}</Text>
+      <Text style={styles.infoText}>Name: {profile.Name}</Text>
+        <Text style={styles.infoText}>Age: {profile.Age}</Text>
+        <Text style={styles.infoText}>Sex: {profile.Sex}</Text>
+        <Text style={styles.infoText}>Current Hospital: {profile.Hospital}</Text>
+        <Text style={styles.infoText}>Patient ID: {profile.Pid}</Text>
+        <Text style={styles.infoText}>Doctor ID: {profile.doctorId}</Text>
+        {/* <Text style={styles.infoText}>Password: {'*'.repeat(profile.password.length)}</Text> */}
       </View>
       
       <Text style={[styles.subHeader, {marginTop: 20}]}>Update Password</Text>

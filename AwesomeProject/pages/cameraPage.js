@@ -17,8 +17,8 @@ export default function ARimageTaken({route, navigation}) {
   const cameraRef = useRef(null);
 
   const options = [
-    { label: "Back", value: "back" },
-    { label: "Front", value: "front" }
+    { label: "back", value: "back" },
+    { label: "front", value: "front" }
   ];
 
   useEffect(() => {

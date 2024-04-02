@@ -39,6 +39,7 @@ export default function App() {
       <Stack.Screen name="CameraPage" component={CameraPageScreen} />
       <Stack.Screen name="MailPage" component={MailboxScreen} />
       <Stack.Screen name="ProfilePage" component={UserInfoPage} />
+      {/* <Stack.Screen name="ConsentPage" component={ConsentPage} /> */}
     </Stack.Navigator>
   </NavigationContainer>
   );

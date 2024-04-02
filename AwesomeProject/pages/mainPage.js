@@ -7,6 +7,8 @@ const buttonSize = width / 2 - 50; // Adjust the 60 to account for padding/margi
 
 const MainPage = ({ route, navigation }) => {
   const username = route.params.username;
+  const startsWithP = username.toLowerCase().startsWith('p');
+  const startsWithD = username.toLowerCase().startsWith('d');
   return (
     <View style={styles.container}>
       <Text style={styles.greeting}>Welcome, {username}!</Text>
@@ -23,13 +25,14 @@ const MainPage = ({ route, navigation }) => {
           <Text style={styles.buttonText}>View TBP</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
+        {startsWithP && <TouchableOpacity
           style={[styles.button, { width: buttonSize, height: buttonSize }]}
           onPress={() => navigation.navigate('CameraPage', { username: username })}
         >
           <Image source={require('../images/button2.png')} style={styles.buttonImage} />
           <Text style={styles.buttonText}>New TBP</Text>
         </TouchableOpacity>
+        }
 
         <TouchableOpacity
           style={[styles.button, { width: buttonSize, height: buttonSize }]}

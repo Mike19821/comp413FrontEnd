@@ -11,9 +11,9 @@ const BrowseTBPsScreen = ({route, navigation}) => {
   const [showDatePicker, setShowDatePicker] = useState(false);
 
   const options = [
-    { label: "Back", value: "back" },
-    { label: "Front", value: "front" },
-    { label: "Both", value: "both" },
+    { label: "back", value: "back" },
+    { label: "front", value: "front" },
+    { label: "both", value: "both" },
   ];
 
   const onChangeDate = (event, selectedDate) => {
