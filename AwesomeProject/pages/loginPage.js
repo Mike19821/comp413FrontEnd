@@ -31,7 +31,6 @@ const LoginPage = ({ navigation }) => {
       navigation.navigate('MainPage', { username: username });
     } catch (error) {
       console.error('Login error', error);
-      navigation.navigate('MainPage', { username: username });
       // Handle login error (e.g., show a message to the user)
     }
   };
