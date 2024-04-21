@@ -25,6 +25,7 @@ const MainPage = ({ route, navigation }) => {
           <Text style={styles.buttonText}>View TBP</Text>
         </TouchableOpacity>
 
+        {/* {!startsWithP &&  <TouchableOpacity */}
         { <TouchableOpacity
           style={[styles.button, { width: buttonSize, height: buttonSize }]}
           onPress={() => navigation.navigate('CameraPage', { username: username })}
@@ -43,7 +44,7 @@ const MainPage = ({ route, navigation }) => {
         </TouchableOpacity>
         }
 {/* {!startsWithD && <TouchableOpacity */}
-        {!startsWithD && <TouchableOpacity
+        {startsWithD && <TouchableOpacity
           style={[styles.button, { width: buttonSize, height: buttonSize }]}
           onPress={() => navigation.navigate('DocPage')}
         >

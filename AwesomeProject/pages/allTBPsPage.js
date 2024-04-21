@@ -34,7 +34,8 @@ const BrowseTBPsScreen = ({route, navigation}) => {
       const formattedDate = `${year}/${day}/${month}`;
 
       console.log(formattedDate);
-      const response = await fetch('http://127.0.0.1:5000/getImage', {
+      // const response = await fetch('http://127.0.0.1:5000/getImage', {
+      const response = await fetch('http://10.0.0.107:5001/getImage', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -45,6 +46,7 @@ const BrowseTBPsScreen = ({route, navigation}) => {
           patientID: username
         }),
       });
+      console.log(response);
       if (!response.ok) {
         throw new Error('Images fetch failed');
       }

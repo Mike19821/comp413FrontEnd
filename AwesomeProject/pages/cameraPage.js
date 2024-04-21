@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Modal, Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { Modal, Text, View, StyleSheet, TouchableOpacity, Image, Linking } from 'react-native';
 import Constants from 'expo-constants';
 import { Camera, CameraType } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
 import { MaterialIcons } from '@expo/vector-icons';
 import Button from './Button.js';
+import { Picker } from '@react-native-picker/picker';
+import PoseEstimationView from './webview.js';
 
 export default function ARimageTaken({route, navigation}) {
   const username = route.params.username;
@@ -23,11 +25,40 @@ export default function ARimageTaken({route, navigation}) {
 
   useEffect(() => {
     (async () => {
+      console.log("asfd");
       MediaLibrary.requestPermissionsAsync();
       const cameraStatus = await Camera.requestCameraPermissionsAsync();
       setHasCameraPermission(cameraStatus.status === 'granted');
+        // Setup interval to capture frame every 100 milliseconds
+        // const intervalId = setInterval(() => {
+        //     captureFrame();
+        // }, 100);
+
+        // // Clear interval on cleanup
+        // return () => clearInterval(intervalId);
     })();
   }, []);
+
+  // const captureFrame = async () => {
+  //   console.log('Capturing frame...');
+  //   if (cameraRef.current) {
+  //       const options = { quality: 0.5, base64: true, skipProcessing: true };
+  //       const photo = await cameraRef.current.takePictureAsync(options);
+  //       console.log(photo.base64);
+  //   }
+  // };
+  url = "https://10.0.0.107:8080/cap.html"
+  const handlePress = async () => {
+    // Checking if the link is supported
+    const supported = await Linking.canOpenURL(url);
+
+    if (supported) {
+      // Opening the link if supported
+      await Linking.openURL(url);
+    } else {
+      Alert.alert(`Don't know how to open this URL: ${url}`);
+    }
+  };
 
   const takePicture = async () => {
     if (cameraRef) {
@@ -57,13 +88,13 @@ export default function ARimageTaken({route, navigation}) {
         const month = String(now.getMonth() + 1).padStart(2, '0');
         const day = String(now.getDate()).padStart(2, '0');
         const formattedDate = `${year}/${day}/${month}`;
-        print(formattedDate);
 
         formData.append('patientID', username);
         formData.append('date', formattedDate);
         formData.append('side', selection);
 
-        let response = await fetch('http://127.0.0.1:5000/uploadImage', {
+        // let response = await fetch('http://127.0.0.1:5000/uploadImage', {
+        let response = await fetch('http://10.0.0.107:5001/uploadImage', {
           method: 'POST',
           headers: {
             'Content-Type': 'multipart/form-data',
@@ -88,6 +119,7 @@ export default function ARimageTaken({route, navigation}) {
     }
   };
 
+
   if (hasCameraPermission === false) {
     return <Text>No access to camera</Text>;
   }
@@ -95,6 +127,10 @@ export default function ARimageTaken({route, navigation}) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Take a new TBP</Text>
+      <TouchableOpacity style={styles.button} onPress={handlePress}>
+        <Text style={styles.text}>Click Me</Text>
+      </TouchableOpacity>
+      <PoseEstimationView />
       {!image ? (
         <Camera
           style={styles.camera}

@@ -9,7 +9,8 @@ const LoginPage = ({ navigation }) => {
     // Here, you would typically make an API call to your backend to verify the user credentials
     console.log('Login credentials', { username, password });
     try {
-      const response = await fetch('http://127.0.0.1:5000/login', {
+      // const response = await fetch('http://127.0.0.1:5000/login', {
+        const response = await fetch('http://10.0.0.107:5001/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -31,6 +32,7 @@ const LoginPage = ({ navigation }) => {
       navigation.navigate('MainPage', { username: username });
     } catch (error) {
       console.error('Login error', error);
+      navigation.navigate('MainPage', { username: username });
       // Handle login error (e.g., show a message to the user)
     }
   };
