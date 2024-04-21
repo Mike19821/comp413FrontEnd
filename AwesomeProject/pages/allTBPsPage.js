@@ -128,6 +128,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#D4DEE6',
   },
   selectionBox: {
     borderWidth: 1,

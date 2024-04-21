@@ -8,6 +8,7 @@ const LoginPage = ({ navigation }) => {
   const handleLogin = async() => {
     // Here, you would typically make an API call to your backend to verify the user credentials
     console.log('Login credentials', { username, password });
+    // navigation.navigate('MainPage', { username: username });
     try {
       // const response = await fetch('http://127.0.0.1:5000/login', {
         const response = await fetch('http://10.0.0.107:5001/login', {

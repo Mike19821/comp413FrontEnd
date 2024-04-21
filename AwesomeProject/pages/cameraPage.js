@@ -126,50 +126,11 @@ export default function ARimageTaken({route, navigation}) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Take a new TBP</Text>
-      <TouchableOpacity style={styles.button} onPress={handlePress}>
+      <Text style={styles.title}>Choose your side</Text>
+      {/* <TouchableOpacity style={styles.button} onPress={handlePress}>
         <Text style={styles.text}>Click Me</Text>
-      </TouchableOpacity>
-      <PoseEstimationView />
-      {!image ? (
-        <Camera
-          style={styles.camera}
-          type={type}
-          ref={cameraRef}
-          flashMode={flash}
-        >
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              paddingHorizontal: 30,
-            }}
-          >
-            <Button
-              title=""
-              icon="retweet"
-              onPress={() => {
-                setType(
-                  type === CameraType.back ? CameraType.front : CameraType.back
-                );
-              }}
-            />
-            <Button
-              onPress={() =>
-                setFlash(
-                  flash === Camera.Constants.FlashMode.off
-                    ? Camera.Constants.FlashMode.on
-                    : Camera.Constants.FlashMode.off
-                )
-              }
-              icon="flash"
-              color={flash === Camera.Constants.FlashMode.off ? 'gray' : '#fff'}
-            />
-          </View>
-        </Camera>
-      ) : (
-        <Image source={{ uri: image }} style={styles.camera} />
-      )}
+      </TouchableOpacity> */}
+  
       <TouchableOpacity
           style={styles.selectionBox}
           onPress={() => setModalVisible(true)}
@@ -195,7 +156,7 @@ export default function ARimageTaken({route, navigation}) {
             <Button title="Save" onPress={savePicture} icon="check" color="#000" textStyle={{ color: '#000' }} />
           </View>
         ) : (
-          <Button title="Take a picture" onPress={takePicture} icon="camera" color="#000" textStyle={{ color: '#000' }} />
+          <Button title="Take a picture" onPress={handlePress} icon="camera" color="#000" textStyle={{ color: '#000' }} />
         )}
       </View>
       <Modal
@@ -237,6 +198,8 @@ const styles = StyleSheet.create({
   },
   selectionText: {
     fontSize: 16,
+    color: '#0D0D0D',
+    textShadowColor: '#0D0D0D',
   },
   photo: {
     width: 300,
@@ -248,14 +211,17 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 22,
+    color: '#0D0D0D',
   },
   modalView: {
     margin: 20,
-    backgroundColor: "white",
+    backgroundColor: "#B4B4B4",
+    // backgroundColor: "red",
     borderRadius: 20,
     padding: 35,
     alignItems: "center",
-    shadowColor: "#000",
+    // shadowColor: "#000",
+    // shadowColor: "#0D0D0D",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -273,7 +239,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     paddingTop: Constants.statusBarHeight,
-    // backgroundColor: '#000',
+    backgroundColor: '#D4DEE6',
     padding: 8,
   },
   controls: {
@@ -307,3 +273,4 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
+
