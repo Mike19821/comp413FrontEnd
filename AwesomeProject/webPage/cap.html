@@ -2,6 +2,42 @@
 <html>
 <head>
   <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    .landmark-grid-container {
+      display: none; /* or 'visibility: hidden;' depending on your needs */
+      width: 0%;
+      height: 0vh;
+      padding:0;
+      margin:0;
+    }
+    .input_video{
+      display: none; /* or 'visibility: hidden;' depending on your needs */
+      width: 0%;
+      height: 0vh;
+      padding:0;
+      margin:0;
+    }
+    .container {
+      width: 100%;       /* Container takes the full width of the screen */
+      height: 100vh;     /* Container takes the full height of the viewport */
+      display: flex;     /* Use flexbox to center the canvas */
+      justify-content: center;
+      align-items: center;
+      padding:0;
+      margin:0;
+      flex-direction: column;
+    }
+    body {
+      padding:0;
+      margin:0;
+    }
+    .photo-button {
+      padding: 0;
+      margin-top: 1%; /* Set the desired top margin, e.g., 20px */
+      width: 10%;
+      height: 5vh;
+    }
+  </style>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils_3d/control_utils_3d.js" crossorigin="anonymous"></script>
@@ -11,10 +47,10 @@
 
 <body>
   <div class="container">
-    <div>asfdasdfasdfasdf</div>
     <video class="input_video"></video>
-    <canvas class="output_canvas" width="1280px" height="720px"></canvas>
+    <canvas class="output_canvas" width="300px" height="400px" display="block" margin="0 0 0 0"></canvas>
     <div class="landmark-grid-container"></div>
+    <button class="photo-button">Take the Photo</button>
   </div>
 </body>
 </html>
@@ -25,18 +61,94 @@
     const canvasCtx = canvasElement.getContext('2d');
     const landmarkContainer = document.getElementsByClassName('landmark-grid-container')[0];
     const grid = new LandmarkGrid(landmarkContainer);
-    
+    const button = document.getElementsByClassName("photo-button")[0];
+
+    let ref_pose;
+    let ref_feat;
+
+    function dist(lm1, lm2) {
+      return Math.sqrt(
+        Math.pow(lm1.x - lm2.x, 2) +
+        Math.pow(lm1.y - lm2.y, 2) +
+        Math.pow(lm1.z - lm2.z, 2)
+      );
+    }
+
+    function is_visible(landmark) {
+      return landmark.visibility > 0.9
+    }
+
+    function get_center(poses) {
+      var x = 0;
+      var y = 0;
+      var z = 0;
+      var count = 0;
+
+      poses.forEach(landmark => {
+        if (is_visible(landmark)) {
+            x += landmark.x;
+            y += landmark.y;
+            z += landmark.z;
+            count++;
+        }
+      });
+
+      // Calculate the average center of visible landmarks
+      if (count > 0) {
+          x /= count;
+          y /= count;
+          z /= count;
+          return { x: x, y: y, z: z };
+      } else {
+          // Return null or some default value if no landmarks are visible enough
+          return null;
+      }
+    }
+
+    function match(ref_poses, poses) {
+      let ref_center = get_center(ref_poses)
+      let center = get_center(poses)
+
+      const ref_encoding = ref_poses.map(lm => is_visible(lm));
+      const encoding = poses.map(lm => is_visible(lm));
+
+      const comp_encoding = ref_encoding.map((lm1, index) => lm1 !== encoding[index]);
+
+      const bi_distance = comp_encoding.reduce((acc, cur) => acc + (cur ? 1 : 0), 0);
+        
+      if (bi_distance >= 2) {
+        return false
+      }
+
+      let distances = [];
+      for (let i = 0; i < ref_poses.length; i++) {
+          if (is_visible(ref_pose[i]) && is_visible(poses[i])) {
+              let distance = dist(ref_poses[i], poses[i]);
+              distances.push(distance);
+          }
+      }
+
+      const totalDistance = distances.reduce((acc, cur) => acc + cur, 0) / distances.length;
+
+      console.log("total dist", totalDistance)
+      return totalDistance < 0.1;
+    }
+
     function onResults(results) {
       if (!results.poseLandmarks) {
         grid.updateLandmarks([]);
         return;
       }
-    
+
+      if (!ref_pose) {
+        ref_pose = results.poseLandmarks
+      }
+
       canvasCtx.save();
       canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-      canvasCtx.drawImage(results.segmentationMask, 0, 0,
-                          canvasElement.width, canvasElement.height);
-    
+      // canvasCtx.drawImage(results.segmentationMask, 0, 0,
+      //                     canvasElement.width, canvasElement.height);
+
       // Only overwrite existing pixels.
       canvasCtx.globalCompositeOperation = 'source-in';
       canvasCtx.fillStyle = '#00FF00';
@@ -48,15 +160,75 @@
           results.image, 0, 0, canvasElement.width, canvasElement.height);
     
       canvasCtx.globalCompositeOperation = 'source-over';
-      drawConnectors(canvasCtx, results.poseLandmarks, POSE_CONNECTIONS,
-                     {color: '#00FF00', lineWidth: 4});
-      drawLandmarks(canvasCtx, results.poseLandmarks,
-                    {color: '#FF0000', lineWidth: 2});
+
+      // Find facial landmarks
+      let minX = Infinity, maxX = 0, minY = Infinity, maxY = 0;
+      results.poseLandmarks.forEach((landmark, index) => {
+        // Assume facial landmarks are within a certain index range
+        // For example, assuming landmarks 0-10 are facial landmarks
+        if (is_visible(landmark) && index <= 10) {
+          minX = Math.min(minX, landmark.x * canvasElement.width);
+          maxX = Math.max(maxX, landmark.x * canvasElement.width);
+          minY = Math.min(minY, landmark.y * canvasElement.height);
+          maxY = Math.max(maxY, landmark.y * canvasElement.height);
+        }
+      });
+
+      // Check if we found any valid facial landmarks
+      if (minX < Infinity) {
+        const dilationFactor = 0.7; // Example: expand box by 10% of its size
+        const width = maxX - minX;
+        const height = maxY - minY;
+        const expandWidth = width * dilationFactor;
+        const expandHeight = height * dilationFactor;
+
+        // Dilate the bounding box
+        minX -= expandWidth;
+        maxX += expandWidth;
+        minY -= expandHeight;
+        maxY += expandHeight;
+
+          // Apply a blur effect on the bounding box around the face
+          canvasCtx.filter = 'blur(50px)';
+          canvasCtx.drawImage(
+              canvasElement,
+              minX, minY, maxX - minX, maxY - minY,
+              minX, minY, maxX - minX, maxY - minY
+          );
+          canvasCtx.filter = 'none';
+      }
+
       canvasCtx.restore();
+
+      drawConnectors(canvasCtx, results.poseLandmarks, POSE_CONNECTIONS,
+                     {color: '#FFFFFF', lineWidth: 2});
+      drawLandmarks(canvasCtx, results.poseLandmarks,
+                    {color: '#FF0000', lineWidth: 1});
+
+      drawConnectors(canvasCtx, ref_pose, POSE_CONNECTIONS,
+          {color: '#FFFFFF', lineWidth: 2});
+      drawLandmarks(canvasCtx, ref_pose,
+          {color: '#008000', lineWidth: 1});
+
+      const match_result = match(results.poseLandmarks, ref_pose)
+      console.log("matching result:", match_result)
+      if (match_result) {
+        canvasElement.style.border = '15px solid green';
+        button.disabled = false;
+        button.style.color = '#00FF00';
+        
+      } else {
+        canvasElement.style.border = '15px solid red';
+        button.disabled = true;
+        button.style.color = '#FF0000';
+      }
     
+      // canvasCtx.fillStyle = 'rgba(255, 0, 0, 0.5)';  // Semi-transparent red
+      // canvasCtx.fillRect(0, 0, canvasElement.width, canvasElement.height);
+
       grid.updateLandmarks(results.poseWorldLandmarks);
     }
-    
+
     const pose = new Pose({locateFile: (file) => {
       return `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`;
     }});
@@ -69,7 +241,7 @@
       minTrackingConfidence: 0.5
     });
     pose.onResults(onResults);
-    
+
     const camera = new Camera(videoElement, {
       onFrame: async () => {
         await pose.send({image: videoElement});
@@ -78,5 +250,4 @@
       height: 720
     });
     camera.start();
-    </script>
-    
+</script>

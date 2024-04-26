@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, View, Text, FlatList, Image, TouchableOpacity, StyleSheet, Button, Platform } from 'react-native';
+import { Modal, View, Text, FlatList, Image, TouchableOpacity, StyleSheet, Button, Platform, TextInput} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 const BrowseTBPsScreen = ({route, navigation}) => {
@@ -9,6 +9,7 @@ const BrowseTBPsScreen = ({route, navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [date, setDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [userInput, setUserInput] = useState(''); 
 
   const options = [
     { label: "back", value: "back" },
@@ -43,7 +44,7 @@ const BrowseTBPsScreen = ({route, navigation}) => {
         body: JSON.stringify({
           side: selection,
           date: formattedDate,
-          patientID: username
+          patientID: userInput,
         }),
       });
       console.log(response);
@@ -82,7 +83,14 @@ const BrowseTBPsScreen = ({route, navigation}) => {
           title="Search TBPs"
           onPress={onPressButton}
         />
+      </View>
 
+      <View style={{ width: '100%', alignItems: 'left', justifyContent: 'center' }}>
+        <TextInput
+          style={styles.textInput}
+          placeholder="Enter the patients' id"
+          onChangeText={text => setUserInput(text)} // Replace with your own handler function
+        />
       </View>
 
       <Modal
@@ -164,6 +172,16 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
+  },
+
+  textInput: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+    width: '70%', // Set width as needed
+    borderColor: '#000', // Customize borderColor as needed
+    backgroundColor: '#D4DEE6' // Customize background color as needed
   },
 });
 

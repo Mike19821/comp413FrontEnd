@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Modal, Text, View, StyleSheet, TouchableOpacity, Image, Linking } from 'react-native';
+import { Modal, Text, View, StyleSheet, TouchableOpacity, Image, Linking, TextInput } from 'react-native';
 import Constants from 'expo-constants';
 import { Camera, CameraType } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
@@ -16,6 +16,7 @@ export default function ARimageTaken({route, navigation}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [flash, setFlash] = useState(Camera.Constants.FlashMode.off);
+  const [userInput, setUserInput] = useState('');
   const cameraRef = useRef(null);
 
   const options = [
@@ -137,6 +138,15 @@ export default function ARimageTaken({route, navigation}) {
         >
           <Text style={styles.selectionText}>{selection || "Side"}</Text>
       </TouchableOpacity>
+
+      <Text style={styles.title}>Enter the patient's ID</Text>
+      <View style={{ width: '100%', alignItems: 'left', justifyContent: 'center' }}>
+        <TextInput
+          style={styles.textInput}
+          placeholder="Enter the patients' id"
+          onChangeText={text => setUserInput(text)} 
+        />
+      </View>
 
       <View style={styles.controls}>
         {image ? (
@@ -271,6 +281,15 @@ const styles = StyleSheet.create({
   },
   topControls: {
     flex: 1,
+  },
+    textInput: {
+    height: 40,
+    margin: 4,
+    borderWidth: 1,
+    padding: 10,
+    width: '100%', // Set width as needed
+    borderColor: '#000', // Customize borderColor as needed
+    backgroundColor: '#D4DEE6' // Customize background color as needed
   },
 });
 

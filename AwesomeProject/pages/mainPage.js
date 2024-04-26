@@ -35,7 +35,7 @@ const MainPage = ({ route, navigation }) => {
         </TouchableOpacity>
         }
 
-        {!startsWithD && <TouchableOpacity
+        {startsWithP && <TouchableOpacity
           style={[styles.button, { width: buttonSize, height: buttonSize }]}
           onPress={() => navigation.navigate('MailPage')}
         >
@@ -44,7 +44,7 @@ const MainPage = ({ route, navigation }) => {
         </TouchableOpacity>
         }
 {/* {!startsWithD && <TouchableOpacity */}
-        {startsWithD && <TouchableOpacity
+        {!startsWithP && <TouchableOpacity
           style={[styles.button, { width: buttonSize, height: buttonSize }]}
           onPress={() => navigation.navigate('DocPage')}
         >

@@ -89,19 +89,22 @@ const UserInfoPage = ({route, navigation}) => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:5000/patientInfo', {
+        const response = await fetch('http://10.0.0.107:5001/doctorInfo', {
+        // const response = await fetch('http://127.0.0.1:5000/doctorInfo', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            patientID: username
+            docID: username
           }),
         });
         if (!response.ok) {
+          console.log(response);
           throw new Error('Profile fetch failed');
         }
         const data = await response.json();
+        console.log(data);
         setProfile(data);
       } catch (error) {
         console.log(error);
@@ -133,7 +136,7 @@ const UserInfoPage = ({route, navigation}) => {
         <Text style={styles.infoText}>Sex: {profile.Sex}</Text>
         <Text style={styles.infoText}>Current Hospital: {profile.Hospital}</Text>
         <Text style={styles.infoText}>Patient ID: {profile.Pid}</Text>
-        <Text style={styles.infoText}>Doctor ID: {profile.doctorId}</Text>
+        <Text style={styles.infoText}>Doctor ID: {profile.DoctorID}</Text>
         {/* <Text style={styles.infoText}>Password: {'*'.repeat(profile.password.length)}</Text> */}
       </View>
       
