@@ -1,3 +1,5 @@
+// This is the main page to display and navigate all components of the APP.
+
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
@@ -17,20 +19,7 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    // <NavigationContainer>
-    //   <Stack.Navigator>
-    //     <Stack.Screen
-    //       name="Home"
-    //       component={LoginPage}
-    //       options={{title: 'Welcome'}}
-    //     />
-    //     <Stack.Screen
-    //       name="registration"
-    //       component={RegistrationPage}
-    //       options={{title: 'registration'}}
-    //     />
-    //   </Stack.Navigator>
-    // </NavigationContainer>
+    // Set the navigations.
     <NavigationContainer>
     <Stack.Navigator initialRouteName="Login">
       <Stack.Screen name="Login" component={LoginPage} />
@@ -41,12 +30,12 @@ export default function App() {
       <Stack.Screen name="MailPage" component={PatientAssignment} />
       <Stack.Screen name="ProfilePage" component={UserInfoPage} />
       <Stack.Screen name="DocPage" component={DoctorAssignmentForm} />
-      {/* <Stack.Screen name="ConsentPage" component={ConsentPage} /> */}
     </Stack.Navigator>
   </NavigationContainer>
   );
 }
 
+// Style of the page.
 const styles = StyleSheet.create({
   container: {
     flex: 1,

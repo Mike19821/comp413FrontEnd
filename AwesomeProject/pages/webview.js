@@ -1,3 +1,5 @@
+// This is the Web page that implement the camera with AR.
+
 import React from 'react';
 import { WebView } from 'react-native-webview';
 

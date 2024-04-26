@@ -1,11 +1,10 @@
+// This is the page where doctors can send the announcement of 
+// transfering patients to another doctor.
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 
-// Placeholder for backend interaction
 const assignPatientToDoctor = async (patientId, doctorId) => {
-  // Simulate sending data to the backend
   console.log(`Assigning patient ${patientId} to doctor ${doctorId}`);
-  // Replace this with actual API call
   return new Promise(resolve => setTimeout(() => resolve({ status: 'success', message: 'Patient assigned successfully' }), 1000));
 };
 
@@ -25,7 +24,6 @@ const DoctorAssignmentForm = () => {
       const result = await assignPatientToDoctor(patientId, doctorId);
       if (result.status === 'success') {
         Alert.alert('Success', result.message);
-        // Optionally reset the form here
         setPatientId('');
         setDoctorId('');
       } else {

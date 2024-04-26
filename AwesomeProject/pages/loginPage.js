@@ -1,3 +1,7 @@
+// This is the page where all users log in their account.
+// Patients will have their account starts with P and doctors
+// will have their account starts with D.
+
 import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet, Text, Image, TouchableOpacity, ImageBackground } from 'react-native';
 
@@ -6,11 +10,8 @@ const LoginPage = ({ navigation }) => {
   const [password, setPassword] = useState('');
 
   const handleLogin = async() => {
-    // Here, you would typically make an API call to your backend to verify the user credentials
     console.log('Login credentials', { username, password });
-    // navigation.navigate('MainPage', { username: username });
     try {
-      // const response = await fetch('clogin', {
         const response = await fetch('http://10.0.0.107:5001/login', {
         method: 'POST',
         headers: {
@@ -29,33 +30,25 @@ const LoginPage = ({ navigation }) => {
   
       const data = await response.json();
       console.log('Login successful', data);
-      // Here you can handle navigation or other actions after a successful login
       navigation.navigate('MainPage', { username: username });
     } catch (error) {
       console.error('Login error', error);
       navigation.navigate('MainPage', { username: username });
-      // Handle login error (e.g., show a message to the user)
     }
   };
 
   const handleSignUp = () => {
-    // Here, you would typically make an API call to your backend to verify the user credentials
     console.log('Login credentials', { username, password });
-    // If login is successful, you can navigate to another screen or perform other actions
-    // navigation.navigate('YourNextScreenName');
     navigation.navigate('SignUp')
   };
 
   return (
     <ImageBackground 
-      // source={require('../images/background2.png')} 
       style={styles.backgroundImage}
-      resizeMode="cover" // Cover the entire screen without stretching the image
+      resizeMode="cover" 
     >
       <View style={styles.container}>
-      {/* <Image style={styles.image} source={require('../heart.webp')} /> */}
       <Image style={styles.image} source={require('../images/LOGO2.png')} />
-      {/* <Text style={styles.title}>Welcome to </Text> */}
       <TextInput
         style={styles.input}
         placeholder="Username"
@@ -69,8 +62,6 @@ const LoginPage = ({ navigation }) => {
         onChangeText={setPassword}
         secureTextEntry
       />
-      {/* <Button title="Login" onPress={handleLogin} />
-      <Button title="SignUp" onPress={handleSignUp} /> */}
       <View style={styles.buttonContainer}>
         <Button title="Login" onPress={handleLogin} />
         <View style={styles.buttonSpacer} />
@@ -79,39 +70,15 @@ const LoginPage = ({ navigation }) => {
     </View>
       
     </ImageBackground>
-
-    // <View style={styles.container}>
-    //   <Image style={styles.image} source={require('../heart.webp')} />
-    //   <Text style={styles.title}>Welcome to APP</Text>
-    //   <TextInput
-    //     style={styles.input}
-    //     placeholder="Username"
-    //     value={username}
-    //     onChangeText={setUsername}
-    //   />
-    //   <TextInput
-    //     style={styles.input}
-    //     placeholder="Password"
-    //     value={password}
-    //     onChangeText={setPassword}
-    //     secureTextEntry
-    //   />
-    //   {/* <Button title="Login" onPress={handleLogin} />
-    //   <Button title="SignUp" onPress={handleSignUp} /> */}
-    //   <View style={styles.buttonContainer}>
-    //     <Button title="Login" onPress={handleLogin} />
-    //     <View style={styles.buttonSpacer} />
-    //     <Button title="SignUp" onPress={handleSignUp} />
-    //   </View>
-    // </View>
   );
 };
 
+// Style for the login page
 const styles = StyleSheet.create({
   backgroundImage: {
-    flex: 1, // Fill the screen
-    width: '100%', // Ensure full width
-    height: '100%', // Ensure full height
+    flex: 1, 
+    width: '100%',
+    height: '100%',
   },
   container: {
     flex: 1,
@@ -120,20 +87,13 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: '#EAF4F1',
   },
-  // container: {
-  //   flex: 1,
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  //   padding: 20,
-  //   backgroundColor: '#F8F9F2',
-  // },
   title: {
     fontSize: 24,
     marginBottom: 20,
   },
   image: {
-    width: 300, // Set your desired width
-    height: 300, // Set your desired height
+    width: 300, 
+    height: 300, 
   },
   input: {
     width: '100%',

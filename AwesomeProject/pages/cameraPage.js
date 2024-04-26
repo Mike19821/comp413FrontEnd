@@ -1,3 +1,6 @@
+// This is the camera page where doctors or nurses can choose the
+// side of pictures they want to take and will direct to the website
+// with our AR guided camera to take TBP.
 import React, { useState, useEffect, useRef } from 'react';
 import { Modal, Text, View, StyleSheet, TouchableOpacity, Image, Linking, TextInput } from 'react-native';
 import Constants from 'expo-constants';
@@ -30,31 +33,14 @@ export default function ARimageTaken({route, navigation}) {
       MediaLibrary.requestPermissionsAsync();
       const cameraStatus = await Camera.requestCameraPermissionsAsync();
       setHasCameraPermission(cameraStatus.status === 'granted');
-        // Setup interval to capture frame every 100 milliseconds
-        // const intervalId = setInterval(() => {
-        //     captureFrame();
-        // }, 100);
-
-        // // Clear interval on cleanup
-        // return () => clearInterval(intervalId);
     })();
   }, []);
 
-  // const captureFrame = async () => {
-  //   console.log('Capturing frame...');
-  //   if (cameraRef.current) {
-  //       const options = { quality: 0.5, base64: true, skipProcessing: true };
-  //       const photo = await cameraRef.current.takePictureAsync(options);
-  //       console.log(photo.base64);
-  //   }
-  // };
   url = "https://10.0.0.107:8080/cap.html"
   const handlePress = async () => {
-    // Checking if the link is supported
     const supported = await Linking.canOpenURL(url);
 
     if (supported) {
-      // Opening the link if supported
       await Linking.openURL(url);
     } else {
       Alert.alert(`Don't know how to open this URL: ${url}`);
@@ -94,7 +80,6 @@ export default function ARimageTaken({route, navigation}) {
         formData.append('date', formattedDate);
         formData.append('side', selection);
 
-        // let response = await fetch('http://127.0.0.1:5000/uploadImage', {
         let response = await fetch('http://10.0.0.107:5001/uploadImage', {
           method: 'POST',
           headers: {
@@ -105,11 +90,11 @@ export default function ARimageTaken({route, navigation}) {
   
         let responseJson = await response.json();
 
-        console.log(responseJson); // Log the response from the server
+        console.log(responseJson);
 
         if (response.ok) {
           alert('Picture uploaded! 🎉');
-          setImage(null); // Clear the image state if upload is successful
+          setImage(null);
         } else {
           alert('Upload failed!');
         }
@@ -127,11 +112,7 @@ export default function ARimageTaken({route, navigation}) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Choose your side</Text>
-      {/* <TouchableOpacity style={styles.button} onPress={handlePress}>
-        <Text style={styles.text}>Click Me</Text>
-      </TouchableOpacity> */}
-  
+      <Text style={styles.title}>Choose your side</Text>  
       <TouchableOpacity
           style={styles.selectionBox}
           onPress={() => setModalVisible(true)}
@@ -226,12 +207,9 @@ const styles = StyleSheet.create({
   modalView: {
     margin: 20,
     backgroundColor: "#B4B4B4",
-    // backgroundColor: "red",
     borderRadius: 20,
     padding: 35,
     alignItems: "center",
-    // shadowColor: "#000",
-    // shadowColor: "#0D0D0D",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -268,16 +246,12 @@ const styles = StyleSheet.create({
     color: '#E9730F',
     marginLeft: 10,
   },
-  // camera: {
-  //   flex: 5,
-  //   borderRadius: 20,
-  // },
   camera: {
-    height: 400, // Set a fixed height
-    width: '100%', // Set width to take up 100% of the container width
+    height: 400, 
+    width: '100%', 
     borderRadius: 20,
-    alignSelf: 'center', // This centers the camera view horizontally
-    marginVertical: 20, // Adds some vertical space above and below the camera view
+    alignSelf: 'center',
+    marginVertical: 20, 
   },
   topControls: {
     flex: 1,
@@ -287,9 +261,9 @@ const styles = StyleSheet.create({
     margin: 4,
     borderWidth: 1,
     padding: 10,
-    width: '100%', // Set width as needed
-    borderColor: '#000', // Customize borderColor as needed
-    backgroundColor: '#D4DEE6' // Customize background color as needed
+    width: '100%', 
+    borderColor: '#000', 
+    backgroundColor: '#D4DEE6' 
   },
 });
 

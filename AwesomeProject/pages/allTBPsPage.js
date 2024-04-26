@@ -1,3 +1,6 @@
+// This is the page to browse all TBP pictures. Users can choose the date
+// and side of the picture and view their TBP.
+
 import React, { useState } from 'react';
 import { Modal, View, Text, FlatList, Image, TouchableOpacity, StyleSheet, Button, Platform, TextInput} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -26,7 +29,6 @@ const BrowseTBPsScreen = ({route, navigation}) => {
 
 
   const onPressButton = async() => {
-    // Your button press functionality here
     try {
       const dateObj = new Date(date);
       const year = dateObj.getFullYear();
@@ -35,7 +37,6 @@ const BrowseTBPsScreen = ({route, navigation}) => {
       const formattedDate = `${year}/${day}/${month}`;
 
       console.log(formattedDate);
-      // const response = await fetch('http://127.0.0.1:5000/getImage', {
       const response = await fetch('http://10.0.0.107:5001/getImage', {
         method: 'POST',
         headers: {
@@ -51,7 +52,6 @@ const BrowseTBPsScreen = ({route, navigation}) => {
       if (!response.ok) {
         throw new Error('Images fetch failed');
       }
-      // const data = await response.json();
       const blob = await response.blob();
       const imageUrl = URL.createObjectURL(blob);
       setPhotos(prevPhotos => [{ id: Date.now().toString(), url: imageUrl }]);
@@ -89,7 +89,7 @@ const BrowseTBPsScreen = ({route, navigation}) => {
         <TextInput
           style={styles.textInput}
           placeholder="Enter the patients' id"
-          onChangeText={text => setUserInput(text)} // Replace with your own handler function
+          onChangeText={text => setUserInput(text)} 
         />
       </View>
 
@@ -179,9 +179,9 @@ const styles = StyleSheet.create({
     margin: 12,
     borderWidth: 1,
     padding: 10,
-    width: '70%', // Set width as needed
-    borderColor: '#000', // Customize borderColor as needed
-    backgroundColor: '#D4DEE6' // Customize background color as needed
+    width: '70%', 
+    borderColor: '#000', 
+    backgroundColor: '#D4DEE6'
   },
 });
 
